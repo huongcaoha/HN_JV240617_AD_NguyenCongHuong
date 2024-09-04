@@ -37,6 +37,9 @@ public class ProductService {
                         System.err.println("List product empty !");
                     }else {
                         System.out.println("****************************** LIST PRODUCTS ********************************");
+                        System.out.println("┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┓");
+                        System.out.printf("| %-8s | %-26s | %-12s | %-27s | %-8s | %-27s | %-12s |\n","ID","Product Name","Price","Descriptions","Stock","Catalog Name","Status");
+                        System.out.println("┗━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━┛");
                         for(Product pro : products){
                             pro.displayData();
                         }

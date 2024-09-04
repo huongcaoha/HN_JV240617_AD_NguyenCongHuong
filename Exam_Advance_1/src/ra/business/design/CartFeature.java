@@ -13,6 +13,9 @@ public class CartFeature {
             System.err.println("List product in cart empty !");
         }else {
             System.out.println("***************************** CARTS ****************************");
+            System.out.println("┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━┓");
+            System.out.printf("| %-8s | %-26s | %-12s | %-8s |\n","ID","Product Name","Price","Quantity");
+            System.out.println("┗━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━┻━━━━━━━━━━┛");
             for(CartItem item : cartItems){
                 item.displayData();
             }
@@ -24,6 +27,9 @@ public class CartFeature {
             System.err.println("List product empty !");
         }else {
             System.out.println("************************************* LIST PRODUCTS ****************************************");
+            System.out.println("┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┓");
+            System.out.printf("| %-8s | %-26s | %-12s | %-27s | %-8s | %-27s | %-12s |\n","ID","Product Name","Price","Descriptions","Stock","Catalog Name","Status");
+            System.out.println("┗━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━┛");
             for(Product pro : products){
                 if(pro.getStatus()){
                     pro.displayData();
@@ -37,10 +43,7 @@ public class CartFeature {
         if(products.isEmpty()){
             System.err.println("List product empty !");
         }else {
-            System.out.println("****************************** LIST PRODUCTS ********************************");
-            for(Product pro : products){
-                pro.displayData();
-            }
+            displayListProducts(IMethod.listProduct());
             List<CartItem> cartItems = IMethod.listCart();
             String idProduct ;
             int stock = 0 ;
@@ -116,11 +119,12 @@ public class CartFeature {
                     break;
                 }
             }
-            cartItems.get(indexCart).setQuantity(quantity);
-            IMethod.saveData(IMethod.fileCart,cartItems);
+
             int difference = quantity - cartItems.get(indexCart).getQuantity();
-            products.get(indexProduct).setStock(products.get(indexProduct).getStock()+ difference);
+                products.get(indexProduct).setStock(products.get(indexProduct).getStock()- difference);
+            cartItems.get(indexCart).setQuantity(quantity);
             IMethod.saveData(IMethod.fileProduct,products);
+            IMethod.saveData(IMethod.fileCart,cartItems);
             System.out.println("Update quantity successfully !");
         }
     }
@@ -150,9 +154,22 @@ public class CartFeature {
 
     public static void deleteAllProductCart(){
         List<CartItem> cartItems = IMethod.listCart();
-        cartItems.clear();
-        IMethod.saveData(IMethod.fileCart,cartItems);
-        System.out.println("Delete all product cart successfully !");
+       if(cartItems.isEmpty()){
+           System.err.println("Cannot delete because carts empty !");
+       }else {
+           List<Product> products = IMethod.listProduct();
+           for(CartItem cartItem : cartItems){
+               int indexProduct = products.stream()
+                       .map(Product::getProductName)
+                       .toList()
+                       .indexOf(cartItem.getProduct().getProductName());
+               products.get(indexProduct).setStock(products.get(indexProduct).getStock()+cartItem.getQuantity());
+           }
+           IMethod.saveData(IMethod.fileProduct,products);
+           cartItems.clear();
+           IMethod.saveData(IMethod.fileCart,cartItems);
+           System.out.println("Delete all product cart successfully !");
+       }
     }
 
 

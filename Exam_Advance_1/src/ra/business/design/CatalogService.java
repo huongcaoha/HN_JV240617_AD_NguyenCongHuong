@@ -43,6 +43,9 @@ public class CatalogService {
                         System.err.println("List catalog empty !");
                     }else {
                         System.out.println("****************************** LIST CATALOG **********************************");
+                        System.out.println("┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+                        System.out.printf("| %-8s | %-28s | %-28s |\n","ID","Catalog Name","Descriptions");
+                        System.out.println("┗━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
                         for(Catalog cate : catalogs){
                             cate.displayData();
                         }
